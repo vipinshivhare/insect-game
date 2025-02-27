@@ -2,41 +2,105 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gradient-animation-duration: 15s;
+}
+
+html, body {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
 }
 
 body {
-  background-color: #516dff;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d, #1a2a6c);
+  background-size: 400% 400%;
+  background-attachment: fixed;
   color: #fff;
   font-family: 'Press Start 2P', sans-serif;
-  height: 100vh;
-  overflow: hidden;
-  margin: 0;
   text-align: center;
+  animation: gradientBG var(--gradient-animation-duration) ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 a {
   color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 h1 {
   line-height: 1.4;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+  animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .btn {
-  border: 0;
-  background-color: #fff;
-  color: #516dff;
-  padding: 15px 20px;
+  border: 3px solid #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 15px 30px;
   font-family: inherit;
   cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn:hover {
-  opacity: 0.9;
+  background: #fff;
+  color: #1a2a6c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-.btn:focus {
-  outline: 0;
+.btn:active {
+  transform: translateY(1px);
 }
 
 .screen {
@@ -46,11 +110,18 @@ h1 {
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  transition: margin 0.5s ease-out;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  background: transparent;
+}
+
+.screen::before {
+  display: none;
 }
 
 .screen.up {
   margin-top: -100vh;
+  transform: scale(0.9);
 }
 
 .insects-list {
@@ -59,58 +130,119 @@ h1 {
   justify-content: center;
   list-style-type: none;
   padding: 0;
+  max-width: 800px;
+  perspective: 1000px;
 }
 
 .insects-list li {
-  margin: 10px;
+  margin: 15px;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.insects-list li:hover {
+  transform: scale(1.05) rotateY(10deg);
 }
 
 .choose-insect-btn {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0.1);
   border: 2px solid #fff;
   color: #fff;
   cursor: pointer;
   font-family: inherit;
   width: 150px;
   height: 150px;
+  border-radius: 10px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+.choose-insect-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  transform: scale(0);
+  transition: transform 0.6s;
+}
+
+.choose-insect-btn:hover::after {
+  transform: scale(1);
 }
 
 .choose-insect-btn:hover {
-  background-color: #fff;
-  color: #516dff;
-}
-
-.choose-insect-btn:active {
-  background-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3),
+              0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .choose-insect-btn img {
   width: 100px;
   height: 100px;
   object-fit: contain;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.4s ease;
+  animation: float 3s ease-in-out infinite;
+}
+
+.choose-insect-btn:hover img {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.4));
 }
 
 .game-container {
   position: relative;
+  background: transparent;
 }
 
 .time,
 .score {
   position: absolute;
   top: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 15px 25px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.time:hover,
+.score:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .time {
   left: 20px;
+  animation: slideInLeft 0.5s ease-out;
 }
 
 .score {
   right: 20px;
+  animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 .message {
   line-height: 1.7;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   width: 100%;
   padding: 20px;
   z-index: 100;
@@ -120,12 +252,22 @@ h1 {
   top: 0;
   left: 50%;
   transform: translate(-50%, -150%);
-  transition: transform 0.4s ease-in;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .message.visible {
   transform: translate(-50%, 150%);
   opacity: 1;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(-50%, 150%); }
+  10%, 30%, 50%, 70%, 90% { transform: translate(-52%, 150%); }
+  20%, 40%, 60%, 80% { transform: translate(-48%, 150%); }
 }
 
 .insect {
@@ -137,14 +279,60 @@ h1 {
   height: 100px;
   position: absolute;
   transform: translate(-50%, -50%) scale(1);
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: spawn 0.5s ease-out;
+}
+
+@keyframes spawn {
+  from {
+    transform: translate(-50%, -50%) scale(0) rotate(180deg);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 .insect.caught {
-  transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+  opacity: 0;
+  filter: brightness(2);
 }
 
 .insect img {
   width: 100px;
   height: 100px;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.insect:hover img {
+  transform: scale(1.2) rotate(0deg);
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.choose-insect-btn p {
+  margin-bottom: 10px;
+  font-size: 12px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.choose-insect-btn:hover p {
+  opacity: 1;
+  transform: scale(1.1);
 }
